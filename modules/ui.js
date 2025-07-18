@@ -79,14 +79,22 @@ export class UI {
    * 格式化關鍵字列表
    * @param {string} focusKeyword - 焦點關鍵字
    * @param {Array|string} keywords - 其他關鍵字
+   * @param {Array} relatedKeywords - 相關關鍵字（從焦點關鍵字分割出來的）
    * @returns {string}
    */
-  formatKeywords(focusKeyword, keywords) {
+  formatKeywords(focusKeyword, keywords, relatedKeywords) {
     let keywordList = [];
     
     // 如果有焦點關鍵字，放在第一個
     if (focusKeyword) {
       keywordList.push(focusKeyword + ' (焦點)');
+    }
+    
+    // 如果有相關關鍵字（從焦點關鍵字分割出來的）
+    if (relatedKeywords && relatedKeywords.length > 0) {
+      relatedKeywords.forEach(kw => {
+        keywordList.push(kw + ' (相關)');
+      });
     }
     
     // 處理其他關鍵字
@@ -96,8 +104,10 @@ export class UI {
         const additionalKeywords = keywords.split(',').map(k => k.trim()).filter(k => k && k !== focusKeyword);
         keywordList.push(...additionalKeywords);
       } else if (Array.isArray(keywords)) {
-        // 如果是陣列，過濾掉焦點關鍵字
-        const additionalKeywords = keywords.filter(k => k && k !== focusKeyword);
+        // 如果是陣列，過濾掉焦點關鍵字和相關關鍵字
+        const additionalKeywords = keywords.filter(k => {
+          return k && k !== focusKeyword && (!relatedKeywords || !relatedKeywords.includes(k));
+        });
         keywordList.push(...additionalKeywords);
       }
     }
@@ -139,7 +149,7 @@ export class UI {
       ${pageData.focusKeyword || pageData.keywords ? `
       <div class="info-item">
         <h4>關鍵字清單</h4>
-        <div class="value">${this.formatKeywords(pageData.focusKeyword, pageData.keywords)}</div>
+        <div class="value">${this.formatKeywords(pageData.focusKeyword, pageData.keywords, pageData.relatedKeywords)}</div>
       </div>
       ` : ''}
       <div class="info-item">

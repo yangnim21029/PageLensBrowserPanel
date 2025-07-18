@@ -173,13 +173,20 @@ class PageLensAnalyzer {
       const fetchPromise = this.wordpress.fetchKeywordsFromWordPress(this.pageData.url);
       
       // 使用 Promise.race 實現超時控制
-      const keywords = await Promise.race([fetchPromise, timeoutPromise]);
+      const result = await Promise.race([fetchPromise, timeoutPromise]);
       
-      if (keywords && keywords.length > 0) {
+      // 處理新的返回格式
+      if (result && result.keywords && result.keywords.length > 0) {
         const focusKeyword = document.getElementById('focusKeyword');
         if (!focusKeyword.value) {
-          focusKeyword.value = keywords[0];
-          this.ui.showToast(`自動填入關鍵字: ${keywords[0]}`, 'success');
+          // 如果有完整的焦點關鍵字，顯示完整版本
+          if (result.fullFocusKeyword) {
+            focusKeyword.value = result.fullFocusKeyword;
+            this.ui.showToast(`自動填入關鍵字: ${result.keywords[0]} (焦點關鍵字)`, 'success');
+          } else {
+            focusKeyword.value = result.keywords[0];
+            this.ui.showToast(`自動填入關鍵字: ${result.keywords[0]}`, 'success');
+          }
         }
       }
     } catch (error) {
@@ -382,7 +389,13 @@ class PageLensAnalyzer {
   }
 
   prepareAnalysisRequest() {
-    const focusKeyword = document.getElementById('focusKeyword').value.trim();
+    let focusKeyword = document.getElementById('focusKeyword').value.trim();
+    
+    // 特殊規則：如果關鍵字是 xxx-xxx2-xxx3 格式，只取第一個部分作為焦點關鍵字
+    if (focusKeyword && focusKeyword.includes('-')) {
+      focusKeyword = focusKeyword.split('-')[0].trim();
+    }
+    
     const language = document.getElementById('language').value;
     const selectedAssessments = this.getSelectedAssessments();
     

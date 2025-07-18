@@ -96,9 +96,14 @@ export class WordPress {
       const keywords = [];
       
       // 從 Yoast SEO 元數據中提取關鍵字
+      let fullFocusKeyword = null; // 保存完整的焦點關鍵字
+      
       if (post.yoast_meta) {
         if (post.yoast_meta.yoast_wpseo_focuskw) {
-          keywords.push(post.yoast_meta.yoast_wpseo_focuskw);
+          fullFocusKeyword = post.yoast_meta.yoast_wpseo_focuskw;
+          // 特殊規則：如果關鍵字是 xxx-xxx2-xxx3 格式，只取第一個部分作為焦點關鍵字
+          const splitKeyword = fullFocusKeyword.split('-')[0].trim();
+          keywords.push(splitKeyword);
         }
         if (post.yoast_meta.yoast_wpseo_metakeywords) {
           keywords.push(...post.yoast_meta.yoast_wpseo_metakeywords.split(',').map(k => k.trim()));
@@ -122,11 +127,17 @@ export class WordPress {
       const uniqueKeywords = [...new Set(keywords.filter(k => k && k.trim()))];
       
       console.log('WordPress 關鍵字已自動填充:', uniqueKeywords);
-      return uniqueKeywords;
+      console.log('完整焦點關鍵字:', fullFocusKeyword);
+      
+      // 返回一個物件，包含關鍵字列表和完整的焦點關鍵字
+      return {
+        keywords: uniqueKeywords,
+        fullFocusKeyword: fullFocusKeyword
+      };
       
     } catch (error) {
       console.error('獲取 WordPress 關鍵字失敗:', error);
-      return [];
+      return { keywords: [], fullFocusKeyword: null };
     }
   }
 
@@ -189,10 +200,21 @@ export class WordPress {
                         wordpressData.description || 
                         '';
     
-    const focusKeyword = wordpressData.seoMetadata?.focusKeyphrase || 
-                         wordpressData.focusKeyword || 
-                         (wordpressData.extractedKeywords && wordpressData.extractedKeywords[0]) || 
-                         '';
+    // 處理焦點關鍵字和相關關鍵字
+    const fullFocusKeyword = wordpressData.seoMetadata?.focusKeyphrase || 
+                            wordpressData.focusKeyword || 
+                            (wordpressData.extractedKeywords && wordpressData.extractedKeywords[0]) || 
+                            '';
+    
+    let focusKeyword = fullFocusKeyword;
+    let relatedKeywords = [];
+    
+    // 特殊規則：如果關鍵字是 xxx-xxx2-xxx3 格式，分割成焦點和相關關鍵字
+    if (fullFocusKeyword && fullFocusKeyword.includes('-')) {
+      const parts = fullFocusKeyword.split('-').map(k => k.trim());
+      focusKeyword = parts[0];
+      relatedKeywords = parts.slice(1);
+    }
     
     return {
       url: url,
@@ -203,7 +225,9 @@ export class WordPress {
       modifiedDate: wordpressData.modifiedDate || '',
       category: wordpressData.category || '',
       tags: wordpressData.tags || [],
-      focusKeyword: focusKeyword
+      focusKeyword: focusKeyword,
+      relatedKeywords: relatedKeywords,
+      fullFocusKeyword: fullFocusKeyword
     };
   }
 }
