@@ -1,0 +1,57 @@
+/**
+ * 分析結果樣式
+ */
+
+.results-container {
+  display: none;
+}
+
+.issues-container {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.issue-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.issue-item:last-child {
+  border-bottom: none;
+}
+
+.issue-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.issue-content h4 {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.issue-content p {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.issue-recommendation {
+  background: var(--color-gray-light);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}

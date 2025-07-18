@@ -1,0 +1,229 @@
+/**
+ * 多選下拉框組件樣式
+ * Multi-select dropdown component styles
+ */
+
+/* 多選下拉框容器 */
+.multi-select-container {
+  position: relative;
+}
+
+/* 多選輸入框 */
+.multi-select-input {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--color-white);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.multi-select-input:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.multi-select-input.active {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 佔位符文字 */
+.multi-select-input .placeholder {
+  position: absolute;
+  left: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* 下拉箭頭 */
+.multi-select-input .arrow {
+  position: absolute;
+  right: 0.75rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 當有標籤時隱藏 placeholder */
+.multi-select-input .selected-tags:not(:empty) ~ .placeholder {
+  opacity: 0;
+}
+
+/* 下拉選單 */
+.multi-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.5rem;
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+}
+
+.multi-select-dropdown.show {
+  display: block;
+}
+
+/* 選項項目 */
+.multi-select-option {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 36px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.multi-select-option:last-child {
+  border-bottom: none;
+}
+
+.multi-select-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.multi-select-option.selected {
+  background: rgba(76, 126, 126, 0.3);
+}
+
+/* 核取方塊 */
+.multi-select-option input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* 選項標籤 */
+.multi-select-option-label {
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  word-break: break-word;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 選項類型標記 */
+.multi-select-option-type {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+/* 已選擇的標籤容器 */
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-right: 2rem; /* 為箭頭保留空間 */
+}
+
+.multi-select-input .selected-tags:empty {
+  display: none;
+}
+
+/* 標籤樣式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+/* 標籤移除按鈕 */
+.tag-remove {
+  cursor: pointer;
+  font-size: 0.875rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  margin-left: 0.2rem;
+}
+
+.tag-remove:hover {
+  opacity: 1;
+}
+
+/* 快速選擇按鈕組 */
+.quick-select-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.quick-select-btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.quick-select-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* 滾動條樣式 */
+.multi-select-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.multi-select-dropdown::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.multi-select-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.multi-select-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .quick-select-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .quick-select-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
