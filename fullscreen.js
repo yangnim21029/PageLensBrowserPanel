@@ -3,7 +3,9 @@ class PageLensAnalyzer {
     this.primaryApiUrl = 'https://page-lens-zeta.vercel.app';
     this.fallbackApiUrl = 'http://localhost:3000';
     this.apiBaseUrl = this.primaryApiUrl; // 預設使用雲端版本
-    this.wpApiUrl = 'https://article-api.presslogic.com/v1/articles/getArticleSEO';
+    // 使用 proxy 端點來隱藏實際的 WordPress API
+    this.wpProxyMetadataUrl = '/api/proxy/metadata';
+    this.wpProxyContentUrl = '/api/proxy/content';
     this.pageData = null;
     this.analysisResult = null;
     this.init();
@@ -281,12 +283,13 @@ class PageLensAnalyzer {
         return;
       }
       
-      const response = await fetch(this.wpApiUrl, {
+      // 使用 proxy 端點獲取 WordPress metadata
+      const response = await this.callPageLensAPI(this.wpProxyMetadataUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ url: this.pageData.url })
+        body: JSON.stringify({ resourceUrl: this.pageData.url })
       });
       
       if (!response.ok) {
@@ -347,12 +350,13 @@ class PageLensAnalyzer {
       
       console.log('嘗試從 WordPress API 獲取關鍵字...');
       
-      const response = await fetch(this.wpApiUrl, {
+      // 使用 proxy 端點獲取 WordPress metadata
+      const response = await this.callPageLensAPI(this.wpProxyMetadataUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ url: this.pageData.url })
+        body: JSON.stringify({ resourceUrl: this.pageData.url })
       });
       
       if (!response.ok) {
@@ -759,12 +763,13 @@ class PageLensAnalyzer {
         return null;
       }
       
-      const response = await fetch(this.wpApiUrl, {
+      // 使用 proxy 竫點獲取 WordPress metadata
+      const response = await this.callPageLensAPI(this.wpProxyMetadataUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({ resourceUrl: url })
       });
       
       if (response.ok) {

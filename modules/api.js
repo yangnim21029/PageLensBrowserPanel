@@ -85,6 +85,40 @@ export class PageLensAPI {
   }
 
   /**
+   * 通過 proxy 獲取 WordPress 內容
+   * @param {Object} request - 請求數據 { resourceId, siteCode }
+   * @returns {Promise<Object>}
+   */
+  async getWordPressContent(request) {
+    const response = await this.callAPI('/api/proxy/content', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request)
+    });
+    
+    return await response.json();
+  }
+
+  /**
+   * 通過 proxy 獲取 WordPress SEO 元數據
+   * @param {Object} request - 請求數據 { resourceUrl }
+   * @returns {Promise<Object>}
+   */
+  async getWordPressMetadata(request) {
+    const response = await this.callAPI('/api/proxy/metadata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request)
+    });
+    
+    return await response.json();
+  }
+
+  /**
    * 健康檢查
    * @returns {Promise<boolean>}
    */
