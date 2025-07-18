@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PageLens SEO 分析器</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/elements.css">
+  <link rel="stylesheet" href="styles/toast.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>🔍 PageLens SEO 分析器</h1>
+      <button class="btn btn-secondary" id="backBtn">← 返回擴充功能</button>
+    </header>
+
+    <main>
+      <div class="content-wrapper">
+        <div class="left-panel">
+          <div class="info-card">
+            <h3>頁面基本資訊</h3>
+            <div id="pageInfoContainer">
+              <!-- 頁面資訊將動態載入 -->
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3>HTML 元素分析</h3>
+            <div id="htmlElementsContainer">
+              <!-- HTML 元素分析將動態載入 -->
+            </div>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div class="url-analyzer">
+            <h3>WordPress URL 分析</h3>
+            <div class="url-input-section">
+              <div class="form-group">
+                <label for="customUrlInput">輸入 WordPress/PressLogic 文章網址進行分析</label>
+                <div class="url-input-wrapper">
+                  <input type="text" id="customUrlInput" placeholder="https://holidaysmart.io/hk/article/..."
+                    style="flex: 1;">
+                  <button class="btn" id="analyzeUrlBtn" style="margin-left: 0.5rem;">🔍 分析</button>
+                </div>
+                <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.5rem;">
+                  <div>✨ 支援站點：Pretty, GirlStyle, HolidaySmart, UrbanLife, PopLady, TopBeauty 等</div>
+                  <div style="margin-top: 0.25rem; color: rgba(255,255,255,0.7);">
+                    <small>⚠️ 僅支援文章頁面（URL 需包含 /article/）</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="results-container" id="resultsContainer">
+            <h3>詳細分析結果</h3>
+            <div class="issues-container">
+              <div id="issuesList">
+                <!-- 問題列表將動態載入 -->
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button class="btn btn-primary" id="saveBtn">📥 儲存報告</button>
+              <button class="btn btn-secondary" id="discardBtn">🗑️ 捨棄報告</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Made with ❤️ by PageLens Team</p>
+    </footer>
+  </div>
+
+  <!-- 載入覆蓋層 -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p>正在分析中，請稍候...</p>
+    </div>
+  </div>
+
+  <!-- 錯誤訊息容器 (隱藏) -->
+  <div class="error-message" id="errorMessage" style="display: none;">
+    <span id="errorText"></span>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- 載入模組化 JavaScript -->
+  <script type="module" src="modules/fullscreen.js"></script>
+</body>
+
+</html>
