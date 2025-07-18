@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PageLens SEO 分析工具</title>
+  <style>
+    body {
+      width: 350px;
+      height: 500px;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, rgb(93, 135, 168) 0%, rgb(44, 62, 80) 100%);
+      color: white;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .header .icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 15px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: rgb(52, 94, 125);
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .content {
+      padding: 20px;
+    }
+    
+    .page-info {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .page-info h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    
+    .page-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    
+    .page-url {
+      font-size: 12px;
+      opacity: 0.7;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+    
+    .analyze-button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, rgb(52, 94, 125) 0%, rgb(44, 62, 80) 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 15px;
+    }
+    
+    .analyze-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .analyze-button:active {
+      transform: translateY(0);
+    }
+    
+    .analyze-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    
+    .quick-action {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 12px;
+    }
+    
+    .quick-action:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    .quick-action .icon {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error {
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="icon">🔍</div>
+    <h1>SEO 分析面板</h1>
+    <p>點擊下方按鈕開啟全螢幕 SEO 分析工具</p>
+  </div>
+  
+  <div class="content">
+    <!-- 初始載入狀態 -->
+    <div class="initial-loading" id="initialLoading" style="text-align: center; padding: 40px 0;">
+      <div class="loading-spinner" style="width: 30px; height: 30px; margin: 0 auto 10px;"></div>
+      <div style="font-size: 14px; opacity: 0.8;">載入中...</div>
+    </div>
+    
+    <!-- 主要內容區域（初始隱藏） -->
+    <div id="mainContent" style="display: none;">
+      <div class="page-info">
+        <h3>當前頁面:</h3>
+        <div class="page-title" id="pageTitle">載入中...</div>
+        <div class="page-url" id="pageUrl">載入中...</div>
+      </div>
+    
+    <button class="analyze-button" id="analyzeBtn">
+      🚀 開啟全螢幕分析
+    </button>
+    
+      <div class="quick-actions">
+        <div class="quick-action" id="seoAnalysis">
+          <div class="icon">📊</div>
+          <div>完整 SEO 分析</div>
+        </div>
+        <div class="quick-action" id="keywordSuggestion">
+          <div class="icon">🎯</div>
+          <div>關鍵字優化建議</div>
+        </div>
+        <div class="quick-action" id="readabilityScore">
+          <div class="icon">📖</div>
+          <div>可讀性評分</div>
+        </div>
+        <div class="quick-action" id="improvementSuggestions">
+          <div class="icon">🔧</div>
+          <div>詳細改進建議</div>
+        </div>
+      </div>
+      
+      <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div>正在分析...</div>
+      </div>
+      
+      <div class="error" id="error"></div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

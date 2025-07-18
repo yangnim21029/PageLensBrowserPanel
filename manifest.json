@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "PageLens SEO 分析工具",
+  "version": "1.0",
+  "description": "專業的 SEO 分析工具，點擊即可分析當前頁面的 SEO 表現",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PageLens SEO 分析"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["fullscreen.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
