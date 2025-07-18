@@ -218,6 +218,18 @@ class PageLensAnalyzer {
       helpBtn.addEventListener('click', () => this.showHelpModal());
     }
     
+    // 語言選擇器
+    const languageSelector = document.getElementById('languageSelector');
+    if (languageSelector) {
+      languageSelector.addEventListener('change', (e) => {
+        this.ui.setLanguage(e.target.value);
+        // 如果已有分析結果，重新渲染
+        if (this.analysisResult) {
+          this.ui.renderAnalysisResults(this.analysisResult);
+        }
+      });
+    }
+    
     // 儲存和捨棄按鈕
     const saveBtn = document.getElementById('saveBtn');
     const discardBtn = document.getElementById('discardBtn');
@@ -241,6 +253,11 @@ class PageLensAnalyzer {
       
       // 準備分析請求
       const analysisRequest = this.prepareAnalysisRequest();
+      
+      // 設定 UI 語言（從選擇器獲取，預設中文）
+      const languageSelector = document.getElementById('languageSelector');
+      const language = languageSelector ? languageSelector.value : 'zh-TW';
+      this.ui.setLanguage(language);
       
       // 調試：查看請求內容
       console.log('=== 分析請求詳情 ===');
@@ -335,6 +352,11 @@ class PageLensAnalyzer {
     try {
       this.ui.showLoading(true);
       
+      // 設定 UI 語言（從選擇器獲取，預設中文）
+      const languageSelector = document.getElementById('languageSelector');
+      const language = languageSelector ? languageSelector.value : 'zh-TW';
+      this.ui.setLanguage(language);
+      
       // 檢查是否為支持的 WordPress 站點
       if (!this.wordpress.isSupportedSite(url)) {
         const supportedSites = this.wordpress.getSupportedSites();
@@ -401,7 +423,7 @@ class PageLensAnalyzer {
       relatedKeywords = parts.slice(1);
     }
     
-    const language = document.getElementById('language').value;
+    const language = 'zh'; // 目前固定為中文
     const selectedAssessments = this.getSelectedAssessments();
     
     // 判斷是否為支援的 WordPress 站點
