@@ -1,0 +1,178 @@
+/**
+ * 版面配置樣式
+ */
+
+/* 頁首 */
+header {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* 主要內容區 */
+.content-wrapper {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* 左側面板 */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 右側面板 */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 資訊卡片 */
+.info-card {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 0 0;
+  margin: -1.5rem -1.5rem 1rem -1.5rem;
+  border-bottom: none;
+}
+
+.info-card .info-item {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.info-card .info-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.info-card .info-item h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-card .info-item .value {
+  color: var(--text-primary);
+  word-break: break-word;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+
+/* HTML 元素分析 */
+.html-elements {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.html-element-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: var(--color-gray-light);
+  border-radius: 6px;
+}
+
+.html-element-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.html-element-count {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 結果容器 */
+.right-panel .results-container {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: var(--shadow-md);
+  display: none; /* 初始隱藏 */
+  margin-top: 1.5rem;
+}
+
+.right-panel .results-container.show {
+  display: block;
+}
+
+.results-container h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 0 0;
+  margin-top: 0;
+}
+
+.issues-container {
+  padding: 1.5rem;
+}
+
+/* 動作按鈕 */
+.action-buttons {
+  display: flex;
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--border-light);
+  gap: 1rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 1200px) {
+  .content-wrapper {
+    grid-template-columns: 350px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+  }
+}

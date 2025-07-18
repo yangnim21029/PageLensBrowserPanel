@@ -1,0 +1,55 @@
+/**
+ * HTML 元素清單樣式
+ * 用於顯示 HTML 元素分析結果
+ */
+
+.page-info-section {
+  margin-bottom: 2rem;
+}
+
+.page-info-section h3 {
+  margin-bottom: 1rem;
+  color: var(--color-white);
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border-bottom: none;
+}
+
+/* info-item styles are now in layout.css to avoid conflicts */
+
+/* 元素列表 */
+.element-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 0.5rem;
+  background: var(--color-white);
+}
+
+.element-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.85rem;
+}
+
+.element-item:last-child {
+  border-bottom: none;
+}
+
+.element-item .tag {
+  background: var(--color-background);
+  color: var(--color-primary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.element-item .text {
+  color: var(--text-secondary);
+}

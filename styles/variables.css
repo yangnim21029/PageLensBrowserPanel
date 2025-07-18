@@ -1,0 +1,37 @@
+/**
+ * 顏色變量定義
+ * 主要配色方案
+ */
+:root {
+  /* 主要顏色 - 自然藍色調 */
+  --color-primary-dark: rgb(44, 62, 80);      /* 深藍灰色 */
+  --color-primary: rgb(52, 94, 125);          /* 主藍色 */
+  --color-primary-light: rgb(93, 135, 168);   /* 淺藍色 */
+  --color-background: rgb(240, 244, 247);     /* 背景色 - 淺藍灰 */
+  
+  /* 衍生顏色 */
+  --color-primary-darker: rgb(34, 49, 63);    /* 更深的藍色版本 */
+  --color-primary-lighter: rgb(119, 157, 187); /* 更淺的藍色版本 */
+  --color-white: rgb(255, 255, 255);
+  --color-gray-light: rgb(247, 250, 252);
+  
+  /* 文字顏色 */
+  --text-primary: var(--color-primary-dark);
+  --text-secondary: var(--color-primary);
+  --text-light: rgba(49, 61, 61, 0.7);
+  --text-white: var(--color-white);
+  
+  /* 邊框顏色 */
+  --border-light: rgba(93, 135, 168, 0.2);
+  --border-medium: rgba(93, 135, 168, 0.4);
+  
+  /* 狀態顏色 - 調整為配合藍色主題 */
+  --color-success: rgb(72, 142, 128);
+  --color-warning: rgb(209, 154, 73);
+  --color-error: rgb(197, 98, 98);
+  
+  /* 陰影 */
+  --shadow-sm: 0 2px 4px rgba(44, 62, 80, 0.1);
+  --shadow-md: 0 4px 6px rgba(44, 62, 80, 0.1);
+  --shadow-lg: 0 10px 25px rgba(44, 62, 80, 0.15);
+}
