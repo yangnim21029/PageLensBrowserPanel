@@ -16,8 +16,10 @@
 <body>
   <div class="container">
     <header>
-      <h1>🔍 PageLens SEO 分析器</h1>
-      <button class="btn btn-secondary" id="backBtn">← 返回擴充功能</button>
+      <div class="header-content">
+        <img src="assets/logo_with_text.png" alt="PageLens SEO 分析器" style="height: 32px; width: auto;">
+        <button class="btn" id="helpBtn" style="background: #2c3e50; color: white; padding: 0.25rem 0.5rem; font-size: 0.75rem; border: none;">使用說明</button>
+      </div>
     </header>
 
     <main>
@@ -47,12 +49,12 @@
                 <div class="url-input-wrapper">
                   <input type="text" id="customUrlInput" placeholder="https://holidaysmart.io/hk/article/..."
                     style="flex: 1;">
-                  <button class="btn" id="analyzeUrlBtn" style="margin-left: 0.5rem;">🔍 分析</button>
+                  <button class="btn" id="analyzeUrlBtn" style="margin-left: 0.5rem;">分析</button>
                 </div>
                 <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.5rem;">
-                  <div>✨ 支援站點：Pretty, GirlStyle, HolidaySmart, UrbanLife, PopLady, TopBeauty 等</div>
+                  <div>支援站點：Pretty, GirlStyle, HolidaySmart, UrbanLife, PopLady, TopBeauty 等</div>
                   <div style="margin-top: 0.25rem; color: rgba(255,255,255,0.7);">
-                    <small>⚠️ 僅支援文章頁面（URL 需包含 /article/）</small>
+                    <small>僅支援文章頁面（URL 需包含 /article/）</small>
                   </div>
                 </div>
               </div>
@@ -67,8 +69,8 @@
               </div>
             </div>
             <div class="action-buttons">
-              <button class="btn btn-primary" id="saveBtn">📥 儲存報告</button>
-              <button class="btn btn-secondary" id="discardBtn">🗑️ 捨棄報告</button>
+              <button class="btn btn-primary" id="saveBtn">儲存報告</button>
+              <button class="btn btn-secondary" id="discardBtn">捨棄報告</button>
             </div>
           </div>
         </div>
@@ -76,7 +78,7 @@
     </main>
 
     <footer>
-      <p>Made with ❤️ by PageLens Team</p>
+      <p>Made by PageLens Team</p>
     </footer>
   </div>
 
