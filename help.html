@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PageLens SEO 分析器 - 使用說明</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <style>
+    /* Docusaurus 風格的簡潔設計 */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .docs-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* 側邊欄 */
+    .sidebar {
+      width: 280px;
+      background: #fff;
+      border-right: 1px solid #e1e4e8;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e1e4e8;
+      background: #fff;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sidebar-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin: 0;
+      color: #666;
+    }
+
+
+    .toc {
+      padding: 1rem 0;
+    }
+
+    .toc-item {
+      display: block;
+      padding: 0.5rem 1.5rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 1rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .toc-item:hover,
+    .toc-item.active {
+      color: var(--color-primary);
+      background: rgba(93, 135, 168, 0.05);
+      border-left-color: var(--color-primary);
+    }
+
+    /* 主要內容區 */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      padding: 2rem 3rem;
+      max-width: calc(100% - 280px);
+    }
+
+    .content-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* 標題樣式 */
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 1rem 0;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 3rem 0 1.5rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e1e4e8;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 2rem 0 1rem 0;
+    }
+
+    /* 文字內容 */
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+      color: #444;
+    }
+
+    .lead {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    /* 列表樣式 */
+    ol, ul {
+      margin: 1rem 0 1.5rem 0;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    /* 程式碼區塊 */
+    code {
+      background: #f6f8fa;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-size: 0.95em;
+      color: #e83e8c;
+    }
+
+    pre {
+      background: #f6f8fa;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #e1e4e8;
+      margin: 1.5rem 0;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: #333;
+    }
+
+    /* 表格樣式 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 1rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem;
+      border-bottom: 1px solid #e1e4e8;
+    }
+
+    th {
+      font-weight: 600;
+      background: #f6f8fa;
+      border-bottom: 2px solid #e1e4e8;
+    }
+
+    /* 卡片樣式 */
+    .info-card {
+      background: #fff;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .warning-card {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-left: 4px solid #f39c12;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .warning-card .warning-title {
+      font-weight: 600;
+      color: #856404;
+      margin: 0 0 0.5rem 0;
+    }
+
+    /* 網格佈局 */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 996px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .main-content {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 1.5rem;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* 滾動條 */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="docs-wrapper">
+    <!-- 側邊欄導航 -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo_with_text.png" alt="PageLens SEO 分析器" style="height: 28px; width: auto;">
+        <p class="sidebar-subtitle" style="margin-left: auto;">使用說明文檔</p>
+      </div>
+      
+      <div class="toc">
+        <a href="#overview" class="toc-item active">概述</a>
+        <a href="#quick-start" class="toc-item">快速開始</a>
+        <a href="#supported-sites" class="toc-item">支援的網站</a>
+        <a href="#analysis-items" class="toc-item">分析項目</a>
+        <a href="#pixel-calculation" class="toc-item">像素寬度計算</a>
+        <a href="#api-reference" class="toc-item">API 參考</a>
+      </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="main-content">
+      <div class="content-container">
+        <section id="overview">
+          <h1>PageLens SEO 分析器</h1>
+          <p class="lead">簡單易用的 WordPress SEO 和可讀性分析工具</p>
+          
+          <p>PageLens 是專為 WordPress/PressLogic 站點設計的 SEO 分析工具，提供深度的內容優化建議。透過先進的中文內容分析技術，幫助您優化文章的搜尋引擎排名和用戶體驗。</p>
+
+        </section>
+
+        <section id="quick-start">
+          <h2>🚀 快速開始</h2>
+          
+          <h3>基本使用流程</h3>
+          <ol>
+            <li><strong>輸入文章網址</strong> - 在右側輸入框貼上 WordPress 文章的完整網址</li>
+            <li><strong>開始分析</strong> - 點擊「🔍 分析」按鈕或按 Enter 鍵</li>
+            <li><strong>檢視結果</strong> - 左側顯示頁面基本資訊，右側顯示詳細分析結果</li>
+            <li><strong>改進優化</strong> - 根據分析結果優化文章內容</li>
+            <li><strong>儲存報告</strong> - 點擊「📥 儲存報告」匯出 JSON 格式報告</li>
+          </ol>
+
+          <h3>使用範例</h3>
+          <pre><code>支援的網址格式：
+https://urbanlifehk.com/article/129579/95%E6%AD%B2%E6%89%93%E5%B7%A5%E4%BB%94%E6%97%A5%E6%9C%AC%E5%A9%86%E5%A9%86%E9%A4%8A%E7%94%9F%E8%A1%93
+https://pretty.presslogic.com/article/746508/%E7%94%B7%E5%A3%AB%E9%AB%AE%E5%9E%8B%E6%8E%A8%E8%96%A6
+https://topbeautyhk.com/article/155133/%E5%8F%A3%E8%85%94%E8%AD%B7%E7%90%86-%E6%BC%B1%E5%8F%A3%E6%B0%B4-%E6%B8%85%E6%BD%94%E5%8F%A3%E8%85%94-%E8%AD%B7%E7%90%86%E7%89%99%E9%BD%92-%E6%BC%B1%E5%8F%A3%E9%BB%83%E9%87%91%E6%99%82%E9%96%93-%E5%88%B7%E7%89%99-%E8%9B%80%E7%89%99</code></pre>
+        </section>
+
+        <section id="supported-sites">
+          <h2>🏢 支援的 WordPress 站點</h2>
+          
+          <p>PageLens 目前支援以下 PressLogic 旗下的 WordPress 站點：</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>網站名稱</th>
+                <th>網域</th>
+                <th>站點代碼</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Pretty</td><td>pretty.presslogic.com</td><td>GS_HK</td></tr>
+              <tr><td>GirlStyle</td><td>girlstyle.com</td><td>GS_TW</td></tr>
+              <tr><td>HolidaySmart</td><td>holidaysmart.io</td><td>HS_HK</td></tr>
+              <tr><td>UrbanLife</td><td>urbanlifehk.com</td><td>UL_HK</td></tr>
+              <tr><td>PopLady</td><td>poplady-mag.com</td><td>POP_HK</td></tr>
+              <tr><td>TopBeauty</td><td>topbeautyhk.com</td><td>TOP_HK</td></tr>
+              <tr><td>TheKDaily</td><td>thekdaily.com</td><td>KD_HK</td></tr>
+              <tr><td>BusinessFocus</td><td>businessfocus.io</td><td>BF_HK</td></tr>
+              <tr><td>MamiDaily</td><td>mamidaily.com</td><td>MD_HK</td></tr>
+              <tr><td>ThePetCity</td><td>thepetcity.co</td><td>PET_HK</td></tr>
+            </tbody>
+          </table>
+
+          <div class="warning-card">
+            <div class="warning-title">⚠️ 重要提醒</div>
+            <p>僅支援文章頁面（URL 需包含 <code>/article/</code>），標籤頁、分類頁等其他頁面暫不支援。</p>
+          </div>
+        </section>
+
+        <section id="analysis-items">
+          <h2>📊 分析項目</h2>
+          
+          <p>PageLens 提供 15 個專業的分析項目，涵蓋 SEO 優化和內容可讀性兩大面向：</p>
+
+          <div class="grid grid-2">
+            <div class="info-card">
+              <h3>SEO 檢測 (11項)</h3>
+              <ul>
+                <li><code>H1_MISSING</code> - H1 標籤檢測</li>
+                <li><code>MULTIPLE_H1</code> - 多重 H1 檢測</li>
+                <li><code>H1_KEYWORD_MISSING</code> - H1 關鍵字檢測</li>
+                <li><code>IMAGES_MISSING_ALT</code> - 圖片 Alt 檢測</li>
+                <li><code>KEYWORD_MISSING_FIRST_PARAGRAPH</code> - 首段關鍵字檢測</li>
+                <li><code>KEYWORD_DENSITY_LOW</code> - 關鍵字密度檢測</li>
+                <li><code>META_DESCRIPTION_NEEDS_IMPROVEMENT</code> - Meta 描述檢測</li>
+                <li><code>META_DESCRIPTION_MISSING</code> - Meta 描述長度檢測</li>
+                <li><code>TITLE_NEEDS_IMPROVEMENT</code> - 標題優化檢測</li>
+                <li><code>TITLE_MISSING</code> - 標題關鍵字檢測</li>
+                <li><code>CONTENT_LENGTH_SHORT</code> - 內容長度檢測</li>
+              </ul>
+            </div>
+            
+            <div class="info-card">
+              <h3>可讀性檢測 (4項)</h3>
+              <ul>
+                <li><code>FLESCH_READING_EASE</code> - 可讀性評分</li>
+                <li><code>PARAGRAPH_LENGTH_LONG</code> - 段落長度檢測</li>
+                <li><code>SENTENCE_LENGTH_LONG</code> - 句子長度檢測</li>
+                <li><code>SUBHEADING_DISTRIBUTION_POOR</code> - 子標題分佈檢測</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="pixel-calculation">
+          <h2>🎯 像素寬度計算</h2>
+          
+          <p>PageLens v2.0 採用像素寬度計算，更準確地評估中文內容在搜尋結果中的顯示效果：</p>
+
+          <h3>計算規則</h3>
+          <ul>
+            <li><strong>中文字符</strong>: 14px/字</li>
+            <li><strong>英文字母</strong>: 5px/字</li>
+            <li><strong>數字</strong>: 8px/字</li>
+            <li><strong>空格</strong>: 5px/字</li>
+            <li><strong>標點符號</strong>: 忽略不計算</li>
+          </ul>
+
+          <h3>標準範圍</h3>
+          <div class="grid grid-2">
+            <div class="info-card">
+              <h4>標題 (Title)</h4>
+              <ul>
+                <li><strong>最佳範圍</strong>: 150-600px</li>
+                <li><strong>可接受範圍</strong>: 100-600px</li>
+              </ul>
+            </div>
+            <div class="info-card">
+              <h4>Meta Description</h4>
+              <ul>
+                <li><strong>最佳範圍</strong>: 600-960px</li>
+                <li><strong>可接受範圍</strong>: 300-960px</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="api-reference">
+          <h2>🔧 API 參考</h2>
+          
+          <p>PageLens 使用 PageLens API v2.0 進行分析，API 地址：</p>
+          <pre><code>https://page-lens-zeta.vercel.app</code></pre>
+
+          <h3>主要端點</h3>
+          
+          <h4>WordPress 文章分析</h4>
+          <pre><code>POST /analyze-wp-url
+
+{
+  "url": "https://holidaysmart.io/article/456984/九龍"
+}</code></pre>
+
+          <h4>HTML 內容分析</h4>
+          <pre><code>POST /analyze
+
+{
+  "htmlContent": "&lt;html&gt;...&lt;/html&gt;",
+  "pageDetails": {
+    "url": "https://example.com",
+    "title": "網頁標題"
+  },
+  "focusKeyword": "關鍵詞"
+}</code></pre>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // 簡單的側邊欄導航
+    document.addEventListener('DOMContentLoaded', function() {
+      const tocItems = document.querySelectorAll('.toc-item');
+      
+      tocItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // 移除所有 active 狀態
+          tocItems.forEach(i => i.classList.remove('active'));
+          
+          // 添加當前項目的 active 狀態
+          this.classList.add('active');
+          
+          // 滾動到對應章節
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+
+      // 滾動時更新導航狀態
+      const sections = document.querySelectorAll('section[id]');
+      const observerOptions = {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            tocItems.forEach(item => {
+              item.classList.remove('active');
+              if (item.getAttribute('href') === `#${id}`) {
+                item.classList.add('active');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+    });
+
+  </script>
+</body>
+
+</html>
