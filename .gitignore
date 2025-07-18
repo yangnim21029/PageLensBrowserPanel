@@ -1,0 +1,47 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (如果之後使用)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Chrome Extension 開發
+*.crx
+*.pem
+*.zip
+
+# 暫存檔案
+*.tmp
+*.temp
+*.log
+
+# 環境設定
+.env
+.env.local
+.env.*.local
+
+# 編輯器備份
+*.bak
+*.backup
+
+# 本地測試資料
+test-data/
+coverage/
