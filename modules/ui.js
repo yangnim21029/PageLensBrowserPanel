@@ -279,7 +279,8 @@ export class UI {
     htmlContent += `
       <div class="info-item" style="background: var(--color-background); border: 1px dashed var(--border-light);">
         <p style="text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
-          💡 提示：WordPress 文章標題會自動作為 H1 進行分析
+          💡 提示：WordPress 文章標題會自動作為 H1 進行分析<br>
+          🆕 新功能：API v2.0 使用像素寬度計算，更準確評估中文內容
         </p>
       </div>
     `;
@@ -637,17 +638,29 @@ export class UI {
       case 'META_DESCRIPTION_MISSING':
       case 'META_DESCRIPTION_NEEDS_IMPROVEMENT':
         const metaDesc = details.metaDescription || details.description || '';
-        const metaLength = details.length || metaDesc.length || 0;
-        dataStr = `${metaLength} 字`;
-        if (metaDesc && metaLength > 0) {
+        if (details.pixelWidth !== undefined) {
+          // 使用新的像素寬度計算
+          dataStr = `${details.pixelWidth}px (約${details.charEquivalent || 0}字)`;
+        } else {
+          // 向後兼容舊格式
+          const metaLength = details.length || metaDesc.length || 0;
+          dataStr = `${metaLength} 字`;
+        }
+        if (metaDesc && metaDesc.length > 0) {
           dataStr += `: "${metaDesc.substring(0, 30)}..."`;
         }
         break;
       case 'TITLE_MISSING':
       case 'TITLE_NEEDS_IMPROVEMENT':
         const title = details.title || '';
-        const titleLength = details.length || title.length || 0;
-        dataStr = `${titleLength} 字`;
+        if (details.pixelWidth !== undefined) {
+          // 使用新的像素寬度計算
+          dataStr = `${details.pixelWidth}px (約${details.charEquivalent || 0}字)`;
+        } else {
+          // 向後兼容舊格式
+          const titleLength = details.length || title.length || 0;
+          dataStr = `${titleLength} 字`;
+        }
         if (title) {
           dataStr += `: "${title.substring(0, 30)}..."`;
         }
@@ -695,10 +708,25 @@ export class UI {
     if (issue.standards && issue.standards.optimal) {
       const optimal = issue.standards.optimal;
       const unit = issue.standards.unit || '';
+      
       if (optimal.min !== undefined && optimal.max !== undefined) {
-        dataStr += ` (建議: ${optimal.min}-${optimal.max}${unit})`;
+        // 如果是像素單位，提供更友好的顯示
+        if (unit === 'px') {
+          if (optimal.min > 0) {
+            dataStr += ` (建議: ${optimal.min}-${optimal.max}${unit})`;
+          } else {
+            dataStr += ` (建議: <${optimal.max}${unit})`;
+          }
+        } else {
+          dataStr += ` (建議: ${optimal.min}-${optimal.max}${unit})`;
+        }
       } else if (optimal.value !== undefined) {
         dataStr += ` (建議: ${optimal.value}${unit})`;
+      }
+      
+      // 如果有描述，優先顯示描述
+      if (issue.standards.description) {
+        dataStr += ` - ${issue.standards.description}`;
       }
     }
     
@@ -718,6 +746,23 @@ export class UI {
     if (score >= 50) return '較困難';
     if (score >= 30) return '困難';
     return '非常困難';
+  }
+
+  /**
+   * 格式化像素寬度顯示
+   * @param {Object} details - 包含 pixelWidth 和 charEquivalent 的詳情對象
+   * @param {string} fallbackValue - 如果沒有像素數據時的回退值
+   * @returns {string}
+   */
+  formatPixelWidth(details, fallbackValue = '') {
+    if (details.pixelWidth !== undefined) {
+      const pixelStr = `${details.pixelWidth}px`;
+      if (details.charEquivalent !== undefined) {
+        return `${pixelStr} (約${details.charEquivalent}字)`;
+      }
+      return pixelStr;
+    }
+    return fallbackValue;
   }
 
   /**
