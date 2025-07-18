@@ -1,110 +1,87 @@
 # PageLens Chrome Extension
 
-PageLens 是一個專業的 SEO 分析 Chrome 插件，可以快速分析網頁的 SEO 表現和可讀性。
+SEO analysis Chrome extension for analyzing webpage performance and readability.
 
-## 功能特色
+## Installation
 
-- 🔍 **一鍵分析**: 點擊即可分析當前頁面的 SEO 表現
-- 📊 **全螢幕分析**: 提供詳細的全螢幕分析界面
-- 🎯 **關鍵字優化**: 支援自定義關鍵字進行優化分析
-- 🌐 **多語言支援**: 支援中文和英文內容分析
-- 📈 **豐富報告**: 包含 SEO 分數、可讀性分數和詳細建議
-- 💾 **報告儲存**: 可以將分析結果匯出為 JSON 格式
+1. Clone this repository
+2. Open Chrome and navigate to `chrome://extensions/`
+3. Enable "Developer mode"
+4. Click "Load unpacked" and select this directory
 
-## 使用流程
+## Architecture
 
-1. **取得頁面內容**: 插件自動獲取當前頁面的 HTML 內容和 URL
-2. **開啟分析面板**: 點擊插件圖標開啟彈窗，然後點擊「開啟全螢幕分析」
-3. **設定分析參數**: 在全螢幕頁面設定關鍵字和選擇檢測項目
-4. **執行分析**: 將頁面內容和設定發送到 PageLens API 進行分析
-5. **檢視結果**: 查看詳細的分析結果和優化建議
-
-## 安裝方法
-
-1. 下載或克隆此專案到本地
-2. 打開 Chrome 瀏覽器，前往 `chrome://extensions/`
-3. 啟用「開發者模式」
-4. 點擊「載入未封裝項目」
-5. 選擇專案資料夾
-6. 插件即可使用
-
-## 檔案結構
-
+### File Structure
 ```
 PageLensBowserPanel/
-├── manifest.json          # 插件配置文件
-├── popup.html             # 彈窗界面
-├── popup.js               # 彈窗邏輯
-├── fullscreen.html        # 全螢幕分析頁面
-├── fullscreen.js          # 全螢幕分析邏輯
-├── background.js          # 背景腳本
-├── content.js             # 內容腳本
-├── icons/                 # 插件圖標
-│   └── icon.svg
-├── API.md                 # API 文檔
-└── README.md              # 說明文件
+├── modules/           # ES6 modules
+│   ├── api.js        # API communication with automatic fallback
+│   ├── ui.js         # UI rendering and updates
+│   ├── wordpress.js  # WordPress-specific functionality
+│   └── fullscreen.js # Main analysis controller
+├── styles/           # Modular CSS with variables
+├── popup.html/js     # Extension popup
+├── fullscreen.html   # Analysis dashboard
+├── manifest.json     # Manifest V3 configuration
+└── CLAUDE.md         # Development instructions
 ```
 
-## API 配置
+### Key Features
+- One-click page analysis
+- Fullscreen dashboard with detailed SEO/readability metrics
+- WordPress/PressLogic network support
+- Custom focus keyword analysis
+- JSON export functionality
 
-插件需要連接到 PageLens API 服務才能正常工作：
+### Data Flow
+1. Popup captures current page HTML via Chrome scripting API
+2. Data stored in Chrome storage (`analysisData` key)
+3. Fullscreen page retrieves data and sends to PageLens API
+4. Results rendered through UI module
 
-- **API 地址**: `http://localhost:3000/api/v1/pagelens`
-- **請求方法**: POST
-- **內容類型**: application/json
+## API Integration
 
-詳細的 API 文檔請參考 `API.md` 文件。
+**Endpoints:**
+- Primary: `https://page-lens-zeta.vercel.app`
+- Fallback: `http://localhost:3000`
+- WordPress: `https://article-api.presslogic.com/v1/articles/getArticleSEO`
 
-## 功能介紹
+**Request Structure:**
+```javascript
+{
+  htmlContent: string,
+  pageDetails: { url, title, language },
+  focusKeyword: string,
+  options: {
+    contentSelectors: ['.article', 'main', '.content'],
+    assessmentConfig: { enableAll: true }
+  }
+}
+```
 
-### 彈窗界面
-- 顯示當前頁面標題和 URL
-- 一鍵開啟全螢幕分析
-- 快速操作按鈕
+## Development
 
-### 全螢幕分析頁面
-- 詳細的分析設定選項
-- 關鍵字自定義輸入
-- 檢測項目選擇
-- 即時分析結果展示
-- 分析報告儲存功能
+### Chrome Storage Keys
+- `analysisData`: Contains `{ html, title, url, timestamp, focusKeyword? }`
 
-### 分析結果
-- **SEO 分數**: 整體 SEO 表現評分
-- **可讀性分數**: 內容可讀性評分
-- **詳細問題列表**: 包含問題描述和優化建議
-- **改進建議**: 具體的優化建議和解決方案
+### Default Assessments
+**SEO:** H1_KEYWORD, ALT_ATTRIBUTE, KEYWORD_DENSITY, META_DESCRIPTION_KEYWORD, TEXT_LENGTH  
+**Readability:** SENTENCE_LENGTH_IN_TEXT, PARAGRAPH_TOO_LONG, FLESCH_READING_EASE
 
-## 支援的檢測項目
+### WordPress Sites Support
+Supported domains are hardcoded in `modules/wordpress.js`. To add new sites, update the `supportedSites` array.
 
-### SEO 檢測
-- H1 標題檢查
-- 頁面標題優化
-- Meta 描述優化
-- 圖片 Alt 文字
-- 關鍵字密度
-- 內容長度
+### Error Handling
+- Input validation: Toast notifications
+- API failures: Automatic cloud → localhost fallback
 
-### 可讀性檢測
-- Flesch 可讀性評分
-- 句子長度檢查
-- 段落長度檢查
+## Chrome Permissions
+- `activeTab`: Access current tab content
+- `scripting`: Execute scripts in tabs
+- `storage`: Store analysis data
+- Host permissions: All URLs for content analysis
 
-## 技術特點
-
-- **Manifest V3**: 使用最新的 Chrome 擴展程式標準
-- **現代 JavaScript**: 使用 ES6+ 語法和現代 API
-- **響應式設計**: 支援各種螢幕尺寸
-- **錯誤處理**: 完整的錯誤處理和用戶提示
-- **資料持久化**: 使用 Chrome Storage API 保存分析資料
-
-## 注意事項
-
-1. 插件需要連接到本地運行的 PageLens API 服務
-2. 某些頁面類型（如 chrome:// 頁面）無法進行分析
-3. 分析結果的準確性取決於 API 服務的配置和運行狀態
-4. 建議在穩定的網路環境下使用
-
-## 開發者資訊
-
-此插件是為了配合 PageLens SEO 分析服務而開發的前端工具，提供了直觀的用戶界面和便捷的操作流程。# PageLensBrowserPanel
+## Testing
+1. Click reload in Chrome extensions page after code changes
+2. For popup debugging: Right-click extension icon → "Inspect popup"
+3. For fullscreen debugging: Open fullscreen page → Use Chrome DevTools
