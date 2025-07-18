@@ -63,6 +63,11 @@ export class UIBase {
     // 觸發動畫
     setTimeout(() => {
       toast.classList.add('show');
+    }, 100);
+    
+    // 5秒後隱藏並移除
+    setTimeout(() => {
+      toast.classList.add('hide');
       setTimeout(() => toast.remove(), 300);
     }, 5000);
   }

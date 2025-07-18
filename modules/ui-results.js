@@ -145,7 +145,7 @@ export class UIResults {
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; font-size: 0.9rem;">
           <div>總檢測項目: ${actualTotal}</div>
           <div style="color: var(--color-success);">✅ 良好: ${goodIssues.length}</div>
-          <div style="color: var(--color-warning);">⚠️ 改進: ${okIssues.length}</div>
+          <div style="color: var(--color-warning);">⚠️ 可優化: ${okIssues.length}</div>
           <div style="color: var(--color-error);">❌ 問題: ${badIssues.length}</div>
         </div>
       </div>
@@ -200,7 +200,7 @@ export class UIResults {
   renderOkIssues(okIssues) {
     return `
       <div style="margin-bottom: 1.5rem;">
-        <h4 style="margin-bottom: 1rem; color: var(--color-warning);">⚠️ 建議改進的項目 (${okIssues.length})</h4>
+        <h4 style="margin-bottom: 1rem; color: var(--color-warning);">⚠️ 可優化項目 (${okIssues.length})</h4>
         <div style="display: grid; gap: 0.5rem;">
           ${okIssues.map(issue => {
             const translated = this.getTranslatedAssessment(issue);
@@ -226,7 +226,7 @@ export class UIResults {
   renderBadIssues(badIssues) {
     return `
       <div style="margin-bottom: 1.5rem;">
-        <h4 style="margin-bottom: 1rem; color: var(--color-error);">❌ 需要修復的問題 (${badIssues.length})</h4>
+        <h4 style="margin-bottom: 1rem; color: var(--color-error);">❌ 存在問題 (${badIssues.length}) - 重要性高</h4>
         <div style="display: grid; gap: 0.5rem;">
           ${badIssues.map(issue => {
             const translated = this.getTranslatedAssessment(issue);

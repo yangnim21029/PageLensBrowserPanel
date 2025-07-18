@@ -19,7 +19,8 @@ const response = await fetch('https://page-lens-zeta.vercel.app/analyze', {
       url: 'https://example.com',
       title: '網頁標題'
     },
-    focusKeyword: '關鍵詞'
+    focusKeyword: '焦點關鍵詞',
+    relatedKeywords: ['相關關鍵詞1', '相關關鍵詞2']
   })
 });
 
@@ -29,7 +30,7 @@ console.log('SEO 分數:', result.report.overallScores.seoScore);
 
 ### 📚 完整文檔
 
-- **`GET /docs`** - 完整 API 文檔和所有 15 個評估項目
+- **`GET /docs`** - 完整 API 文檔和所有 16 個評估項目
 - **`GET /example`** - 使用範例和完整請求/回應格式
 
 ## 📋 主要端點
@@ -48,7 +49,9 @@ POST /analyze
 
 **可選參數：**
 
-- `focusKeyword` - 目標關鍵詞
+- `focusKeyword` - 焦點關鍵詞
+- `relatedKeywords` - 相關關鍵字清單（字串陣列）
+- `synonyms` - 同義詞清單（字串陣列，預留給未來功能）_目前建議使用 relatedKeywords_
 - `options.contentSelectors` - CSS 選擇器（指定分析區域）
 - `options.excludeSelectors` - CSS 選擇器（排除區域）
 
@@ -64,7 +67,55 @@ POST /analyze-wp-url
 
 **支援網站：** PressLogic 旗下所有網站（holidaysmart.io、girlstyle.com 等）
 
-### 3. 文檔端點
+**⚠️ WordPress 關鍵字特殊處理規則：**
+
+WordPress API 返回的 `focusKeyphrase` 欄位會使用 `-` 作為分隔符，格式為：
+
+```
+焦點關鍵字-相關關鍵字1-相關關鍵字2-相關關鍵字3
+```
+
+系統會自動解析為：
+
+- **焦點關鍵字 (focusKeyword)**：第一個關鍵字
+- **相關關鍵字清單 (relatedKeywords)**：其餘所有關鍵字
+
+範例：
+
+```json
+// WordPress API 返回
+{
+  "focusKeyphrase": "香港半日遊好去處-九龍半日遊好去處-港島半日遊好去處-新界半日遊好去處"
+}
+
+// PageLens 解析後
+{
+  "focusKeyword": "香港半日遊好去處",
+  "relatedKeywords": ["九龍半日遊好去處", "港島半日遊好去處", "新界半日遊好去處"]
+}
+```
+
+**注意：** 此特殊規則僅適用於 WordPress 端點，一般 `/analyze` 端點仍需分別提供 `focusKeyword` 和 `relatedKeywords`。
+
+### 3. 代理端點（隱藏 WordPress 路由）
+
+```http
+POST /api/proxy/content    # 獲取文章內容
+POST /api/proxy/metadata   # 獲取 SEO 元數據
+```
+
+**用途：** 通過代理層訪問 WordPress API，隱藏實際的 WordPress 端點
+
+**Content 端點參數：**
+
+- `resourceId` - 文章 ID
+- `siteCode` - 站點代碼（如 GS_HK）
+
+**Metadata 端點參數：**
+
+- `resourceUrl` - 文章完整 URL
+
+### 4. 文檔端點
 
 ```http
 GET /docs     # 完整 API 文檔
@@ -76,7 +127,7 @@ GET /example  # 使用範例
 ### 統一評估 ID 格式
 
 - **統一命名：** 所有評估 ID 現在前後端一致（如 `H1_MISSING = 'H1_MISSING'`）
-- **固定數量：** 每次分析保證返回 15 個評估結果
+- **固定數量：** 每次分析保證返回 16 個評估結果
 - **增強回應：** 包含處理時間、API 版本、時間戳等資訊
 
 ### 🆕 像素寬度計算
@@ -124,7 +175,8 @@ const response = await fetch('https://page-lens-zeta.vercel.app/analyze', {
   body: JSON.stringify({
     htmlContent: '<html>...</html>',
     pageDetails: { url: 'https://example.com', title: '標題' },
-    focusKeyword: '關鍵詞',
+    focusKeyword: '焦點關鍵詞',
+    relatedKeywords: ['相關關鍵詞1', '相關關鍵詞2'],
     options: {
       contentSelectors: ['article', 'main'],
       excludeSelectors: ['.ad', '.sidebar']
@@ -251,13 +303,14 @@ API 現在會在 `pageUnderstanding` 欄位返回頁面的結構化理解資訊�
 ...
 ```
 
-## 🔧 15 個評估項目
+## 🔧 16 個評估項目
 
-### SEO 項目 (11 個)
+### SEO 項目 (12 個)
 
 - `H1_MISSING` - H1 標籤檢測
 - `MULTIPLE_H1` - 多重 H1 檢測
 - `H1_KEYWORD_MISSING` - H1 關鍵字檢測
+- `H2_SYNONYMS_MISSING` - H2 相關關鍵字檢測（檢查 relatedKeywords）
 - `IMAGES_MISSING_ALT` - 圖片 Alt 檢測
 - `KEYWORD_MISSING_FIRST_PARAGRAPH` - 首段關鍵字檢測
 - `KEYWORD_DENSITY_LOW` - 關鍵字密度檢測
@@ -312,7 +365,8 @@ curl -X POST "https://page-lens-zeta.vercel.app/analyze" \
       "url": "https://example.com/article",
       "title": "Article Title"
     },
-    "focusKeyword": "關鍵詞",
+    "focusKeyword": "焦點關鍵詞",
+    "synonyms": ["相關關鍵詞1", "相關關鍵詞2"],
     "options": {
       "contentSelectors": ["article", "main", ".content"],
       "excludeSelectors": [".ad", ".sidebar"]
