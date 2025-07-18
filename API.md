@@ -79,9 +79,17 @@ GET /example  # 使用範例
 - **固定數量：** 每次分析保證返回 15 個評估結果
 - **增強回應：** 包含處理時間、API 版本、時間戳等資訊
 
+### 🆕 像素寬度計算
+
+- **精確評估：** 針對中文內容使用像素寬度計算，而非字符數
+- **計算規則：** 中文字 14px、英文字母 5px、數字 8px、空格 5px
+- **智能標準：** Title >150px 良好(最大 600px)、Meta Description >600px 良好(最大 960px)
+- **雙重數據：** 同時提供 `pixelWidth` 和 `charEquivalent` 兩種數據
+
 ### 評估標準值
 
 - **標準範圍：** 部分評估項目現在會返回 `standards` 欄位
+- **像素單位：** Title 和 Meta Description 使用 px 單位，更準確
 - **包含內容：** 最佳範圍 (optimal)、可接受範圍 (acceptable)、單位和說明
 - **獨立定義：** 每個評估器內部獨立定義標準值，保持模組化
 
@@ -135,24 +143,53 @@ API 現在會在 `markdownReport` 欄位返回格式化的 Markdown 報告，包
 
 ### 📊 評估標準值功能
 
-部分評估項目會返回 `standards` 欄位，包含該項目的標準值範圍：
+部分評估項目會返回 `standards` 欄位，包含該項目的標準值範圍。**新版本採用像素寬度計算**，更準確地評估中文內容：
 
 ```javascript
-// API 回應範例（包含 standards）
+// API 回應範例（Meta Description - 使用像素寬度）
 {
-  "id": "KEYWORD_DENSITY_LOW",
+  "id": "META_DESCRIPTION_MISSING",
   "type": "SEO",
-  "name": "Good Keyword Density",
+  "name": "Meta Description Length Good",
   "status": "good",
   "score": 100,
-  "details": { "density": 1.8, "keywordCount": 12, "totalWords": 667 },
+  "details": {
+    "pixelWidth": 837,
+    "charEquivalent": 60
+  },
   "standards": {
-    "optimal": { "min": 0.5, "max": 2.5, "unit": "%" },
-    "acceptable": { "min": 0.3, "max": 3.0, "unit": "%" },
-    "description": "關鍵字密度最佳範圍 0.5-2.5%"
+    "optimal": { "min": 600, "max": 960, "unit": "px" },
+    "acceptable": { "min": 300, "max": 960, "unit": "px" },
+    "description": "Meta 描述寬度最佳 >600px，最大960px"
+  }
+}
+
+// API 回應範例（Title - 使用像素寬度）
+{
+  "id": "TITLE_NEEDS_IMPROVEMENT",
+  "type": "SEO",
+  "name": "Title Length Good",
+  "status": "good",
+  "score": 100,
+  "details": {
+    "pixelWidth": 263,
+    "charEquivalent": 19
+  },
+  "standards": {
+    "optimal": { "min": 150, "max": 600, "unit": "px" },
+    "acceptable": { "min": 100, "max": 600, "unit": "px" },
+    "description": "標題寬度最佳 >150px，最大600px"
   }
 }
 ```
+
+#### 像素寬度計算規則：
+
+- **中文字符**: 14px/字
+- **英文字母**: 5px/字
+- **數字**: 8px/字
+- **空格**: 5px/字
+- **標點符號**: 忽略不計算
 
 ### 📖 頁面理解資訊功能
 
