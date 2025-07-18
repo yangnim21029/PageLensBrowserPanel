@@ -264,6 +264,7 @@ class PageLensAnalyzer {
       }
       
       console.log('焦點關鍵字:', analysisRequest.focusKeyword || '無');
+      console.log('相關關鍵字:', analysisRequest.relatedKeywords || '無');
       console.log('語言設定:', analysisRequest.pageDetails.language);
       console.log('檢測配置:', analysisRequest.options.assessmentConfig);
       
@@ -281,6 +282,7 @@ class PageLensAnalyzer {
         htmlContent: analysisRequest.htmlContent ? `[${analysisRequest.htmlContent.length} chars]` : null,
         pageDetails: analysisRequest.pageDetails,
         focusKeyword: analysisRequest.focusKeyword,
+        relatedKeywords: analysisRequest.relatedKeywords,
         options: analysisRequest.options
       }, null, 2));
       
@@ -390,10 +392,13 @@ class PageLensAnalyzer {
 
   prepareAnalysisRequest() {
     let focusKeyword = document.getElementById('focusKeyword').value.trim();
+    let relatedKeywords = [];
     
-    // 特殊規則：如果關鍵字是 xxx-xxx2-xxx3 格式，只取第一個部分作為焦點關鍵字
+    // 特殊規則：如果關鍵字是 xxx-xxx2-xxx3 格式，分割成焦點和相關關鍵字
     if (focusKeyword && focusKeyword.includes('-')) {
-      focusKeyword = focusKeyword.split('-')[0].trim();
+      const parts = focusKeyword.split('-').map(k => k.trim());
+      focusKeyword = parts[0];
+      relatedKeywords = parts.slice(1);
     }
     
     const language = document.getElementById('language').value;
@@ -424,6 +429,7 @@ class PageLensAnalyzer {
         language: language
       },
       focusKeyword: focusKeyword || undefined,
+      relatedKeywords: relatedKeywords.length > 0 ? relatedKeywords : undefined,
       options: options
     };
   }

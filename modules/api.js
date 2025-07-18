@@ -4,10 +4,58 @@
  */
 export class PageLensAPI {
   constructor() {
-    this.apiEndpoints = [
-      'https://page-lens-zeta.vercel.app',  // 雲端版本
-      'http://localhost:3000'                // 本地版本
+    // 檢查是否在開發模式（可以通過 URL 參數或 localStorage 設定）
+    const isDevelopment = this.checkDevelopmentMode();
+    
+    // 根據模式設定 API 端點順序
+    this.apiEndpoints = isDevelopment ? [
+      'http://localhost:3000',               // 開發模式優先使用本地版本
+      'https://page-lens-zeta.vercel.app'   // 備用雲端版本
+    ] : [
+      'https://page-lens-zeta.vercel.app',  // 生產模式優先使用雲端版本
+      'http://localhost:3000'                // 備用本地版本
     ];
+    
+    console.log('PageLens API 模式:', isDevelopment ? '開發模式' : '生產模式');
+    console.log('API 端點優先順序:', this.apiEndpoints);
+  }
+  
+  /**
+   * 檢查是否在開發模式
+   * @returns {boolean}
+   */
+  checkDevelopmentMode() {
+    // 方法 1: 檢查 URL 參數
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('dev') === 'true') {
+      return true;
+    }
+    
+    // 方法 2: 檢查 localStorage
+    if (localStorage.getItem('pageLensDevMode') === 'true') {
+      return true;
+    }
+    
+    // 方法 3: 檢查是否在本地開發環境
+    if (window.location.hostname === 'localhost' || 
+        window.location.hostname === '127.0.0.1') {
+      return true;
+    }
+    
+    return false;
+  }
+  
+  /**
+   * 切換開發模式
+   * @param {boolean} enabled
+   */
+  setDevelopmentMode(enabled) {
+    if (enabled) {
+      localStorage.setItem('pageLensDevMode', 'true');
+    } else {
+      localStorage.removeItem('pageLensDevMode');
+    }
+    console.log('開發模式已' + (enabled ? '啟用' : '停用') + '，請重新載入頁面');
   }
 
   /**
@@ -34,10 +82,13 @@ export class PageLensAPI {
         });
         
         if (response.ok) {
-          console.log(`API 調用成功 (${apiType})`);
+          console.log(`✅ API 調用成功 (${apiType}): ${url}`);
+          // 在 response 中標記使用的 API 類型
+          response._apiType = apiType;
+          response._apiUrl = url;
           return response;
         } else {
-          console.warn(`API 調用失敗 (${apiType}): HTTP ${response.status}`);
+          console.warn(`❌ API 調用失敗 (${apiType}): HTTP ${response.status}`);
           errors.push(`${apiType}: HTTP ${response.status}`);
         }
       } catch (error) {

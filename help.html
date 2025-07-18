@@ -292,6 +292,7 @@
         <a href="#analysis-items" class="toc-item">分析項目</a>
         <a href="#pixel-calculation" class="toc-item">像素寬度計算</a>
         <a href="#api-reference" class="toc-item">API 參考</a>
+        <a href="#development" class="toc-item">開發指南</a>
       </div>
     </nav>
 
@@ -452,6 +453,61 @@ https://topbeautyhk.com/article/155133/%E5%8F%A3%E8%85%94%E8%AD%B7%E7%90%86-%E6%
   },
   "focusKeyword": "關鍵詞"
 }</code></pre>
+        </section>
+
+        <section id="development">
+          <h2>🔧 開發指南</h2>
+          <h3>使用 Localhost API 進行開發測試</h3>
+          
+          <h4>方法 1: URL 參數（推薦）</h4>
+          <p>在分析頁面的 URL 後加上 <code>?dev=true</code> 參數：</p>
+          <pre><code>chrome-extension://[extension-id]/fullscreen.html?dev=true</code></pre>
+          
+          <h4>方法 2: 瀏覽器控制台</h4>
+          <p>在瀏覽器控制台執行：</p>
+          <pre><code class="language-javascript">// 啟用開發模式
+localStorage.setItem('pageLensDevMode', 'true');
+location.reload();
+
+// 停用開發模式
+localStorage.removeItem('pageLensDevMode');
+location.reload();</code></pre>
+
+          <h4>API 端點優先順序</h4>
+          <ul>
+            <li><strong>生產模式</strong>（預設）：
+              <ol>
+                <li>先嘗試 <code>https://page-lens-zeta.vercel.app</code></li>
+                <li>失敗後嘗試 <code>http://localhost:3000</code></li>
+              </ol>
+            </li>
+            <li><strong>開發模式</strong>：
+              <ol>
+                <li>先嘗試 <code>http://localhost:3000</code></li>
+                <li>失敗後嘗試 <code>https://page-lens-zeta.vercel.app</code></li>
+              </ol>
+            </li>
+          </ul>
+
+          <h4>查看當前使用的 API</h4>
+          <p>開啟瀏覽器開發者工具 (F12)，在 Console 標籤中可以看到：</p>
+          <ul>
+            <li><code>PageLens API 模式: 開發模式</code> 或 <code>PageLens API 模式: 生產模式</code></li>
+            <li><code>✅ API 調用成功 (本地版本)</code> 或 <code>✅ API 調用成功 (雲端版本)</code></li>
+          </ul>
+
+          <h4>本地 API 伺服器設置</h4>
+          <p>確保你的本地 PageLens API 伺服器運行在 <code>http://localhost:3000</code>：</p>
+          <pre><code class="language-bash"># 在 PageLens API 專案目錄
+npm install
+npm run dev</code></pre>
+
+          <h4>注意事項</h4>
+          <ol>
+            <li>開發模式設定會保存在瀏覽器的 localStorage 中</li>
+            <li>清除瀏覽器資料會重置為生產模式</li>
+            <li>如果本地 API 無法連接，會自動 fallback 到雲端 API</li>
+          </ol>
         </section>
 
       </div>
