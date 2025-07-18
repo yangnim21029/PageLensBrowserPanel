@@ -22,6 +22,9 @@ class PageLensAnalyzer {
 
   async init() {
     try {
+      // 初始化 header 滾動效果
+      this.initHeaderScrollEffect();
+      
       // 從 Chrome storage 載入頁面資料
       const result = await chrome.storage.local.get(['analysisData']);
       if (result.analysisData) {
@@ -74,6 +77,47 @@ class PageLensAnalyzer {
       console.error('初始化失敗:', error);
       this.ui.showError('初始化失敗: ' + error.message);
     }
+  }
+
+  /**
+   * 初始化 header 滾動效果
+   */
+  initHeaderScrollEffect() {
+    const header = document.querySelector('header');
+    let ticking = false;
+
+    const updateHeader = () => {
+      const scrollY = window.scrollY;
+      
+      if (scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    };
+
+    // 添加點擊標題回到頂部功能
+    const headerTitle = header.querySelector('h1');
+    if (headerTitle) {
+      headerTitle.style.cursor = 'pointer';
+      headerTitle.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   populateForm() {
@@ -159,6 +203,12 @@ class PageLensAnalyzer {
           this.analyzeCustomUrl();
         }
       });
+    }
+    
+    // 使用說明按鈕
+    const helpBtn = document.getElementById('helpBtn');
+    if (helpBtn) {
+      helpBtn.addEventListener('click', () => this.showHelpModal());
     }
     
     // 儲存和捨棄按鈕
@@ -418,6 +468,14 @@ class PageLensAnalyzer {
         chrome.tabs.remove(tab.id);
       });
     }
+  }
+
+  showHelpModal() {
+    // 打開新分頁顯示說明頁面
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('help.html'),
+      active: true
+    });
   }
 }
 
