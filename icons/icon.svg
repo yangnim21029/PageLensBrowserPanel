@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圓形 -->
+  <circle cx="64" cy="64" r="60" fill="url(#grad1)" stroke="#fff" stroke-width="2"/>
+  
+  <!-- 搜索圖標 -->
+  <circle cx="50" cy="50" r="18" fill="none" stroke="#fff" stroke-width="4"/>
+  <line x1="72" y1="72" x2="85" y2="85" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- SEO 文字 -->
+  <text x="64" y="100" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">SEO</text>
+</svg>
