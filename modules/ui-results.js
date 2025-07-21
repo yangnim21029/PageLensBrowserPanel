@@ -265,10 +265,27 @@ export class UIResults {
     const translation = getAssessmentTranslation(assessmentId, issue.rating, this.currentLanguage);
     
     if (translation) {
+      let description = translation.description;
+      
+      // 如果 API 返回了 standards，優先使用 API 的標準值
+      if (issue.standards && issue.standards.description) {
+        description = issue.standards.description;
+      } else if (issue.standards && issue.standards.optimal) {
+        const optimal = issue.standards.optimal;
+        const unit = issue.standards.unit || '';
+        if (optimal.min !== undefined && optimal.max !== undefined) {
+          description += ` (建議: ${optimal.min}-${optimal.max}${unit})`;
+        } else if (optimal.min !== undefined) {
+          description += ` (建議: >${optimal.min}${unit})`;
+        } else if (optimal.max !== undefined) {
+          description += ` (建議: <${optimal.max}${unit})`;
+        }
+      }
+      
       return {
         name: translation.name,
         title: translation.title,
-        description: translation.description,
+        description: description,
         recommendation: translation.recommendation
       };
     }
@@ -309,13 +326,17 @@ export class UIResults {
           `"${details.firstParagraph.substring(0, 50)}..."` : 
           `關鍵字: ${details.keywordCount || 0} 次`;
         break;
-      case 'KEYWORD_DENSITY_LOW':
+      case 'KEYWORD_DENSITY_LOW': {
         const densityValue = parseFloat(details.density || details.keywordDensity || '0');
         const density = densityValue.toFixed(2);
         const keywordCount = details.keywordCount || 0;
+        const keywordLength = details.keywordLength || 0;
         const totalWords = details.totalWords || details.wordCount || 0;
-        dataStr = `${density}% (${keywordCount}/${totalWords} 字)`;
+        // 計算出現總字數：關鍵字長度 × 出現次數
+        const totalKeywordChars = keywordLength * keywordCount;
+        dataStr = `${density}% (${totalKeywordChars}/${totalWords} 字)`;
         break;
+      }
       case 'META_DESCRIPTION_MISSING':
       case 'META_DESCRIPTION_NEEDS_IMPROVEMENT':
         const metaDesc = details.metaDescription || details.description || '';

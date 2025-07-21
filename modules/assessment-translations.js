@@ -227,7 +227,8 @@ const assessmentTranslations = {
       bad: {
         title: '關鍵字密度異常',
         description: '關鍵字密度過低或過高',
-        recommendation: '調整關鍵字使用頻率，建議密度保持在 0.5-2.5% 之間。'
+        recommendation:
+          '調整關鍵字使用頻率，建議密度保持在 0.5-2.5% 之間。H2 標題中的關鍵字有 2 倍權重。'
       }
     },
     en: {
@@ -241,7 +242,8 @@ const assessmentTranslations = {
       bad: {
         title: 'Keyword Density Issue',
         description: 'Keyword density is too low or too high',
-        recommendation: 'Adjust keyword usage. Recommended density: 0.5-2.5%.'
+        recommendation:
+          'Adjust keyword usage. Recommended density: 0.5-2.5%. Keywords in H2 headings have 2x weight.'
       }
     }
   },
