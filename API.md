@@ -244,7 +244,7 @@ API 現在會在 `markdownReport` 欄位返回格式化的 Markdown 報告，包
   "standards": {
     "optimal": { "min": 150, "max": 600, "unit": "px" },
     "acceptable": { "min": 100, "max": 600, "unit": "px" },
-    "description": "標題寬度最佳 >150px，最大600px"
+    "description": "Meta 標題寬度最佳 >150px，最大600px"
   }
 }
 ```
@@ -330,8 +330,8 @@ API 現在會在 `pageUnderstanding` 欄位返回頁面的結構化理解資訊�
 - `KEYWORD_DENSITY_LOW` - 關鍵字密度檢測（v2.4: 考慮關鍵字長度，H2 關鍵字享 2x 權重；支援空格分隔的關鍵字）
 - `META_DESCRIPTION_NEEDS_IMPROVEMENT` - Meta 描述檢測
 - `META_DESCRIPTION_MISSING` - Meta 描述長度檢測
-- `TITLE_NEEDS_IMPROVEMENT` - 標題優化檢測
-- `TITLE_MISSING` - 標題關鍵字檢測
+- `TITLE_NEEDS_IMPROVEMENT` - Meta 標題優化檢測
+- `TITLE_MISSING` - Meta 標題關鍵字檢測
 - `CONTENT_LENGTH_SHORT` - 內容長度檢測
 
 ### 可讀性項目 (4 個)

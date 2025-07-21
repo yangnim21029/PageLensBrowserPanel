@@ -253,7 +253,7 @@ export class UIResults {
     const assessmentId = issue.assessmentId || issue.id;
     
     if (!assessmentId) {
-      console.warn('評估項目缺少 ID:', issue);
+      console.warn('評估項目缺少 ID，使用原始名稱:', issue.name);
       return {
         name: issue.name || '未知評估',
         title: issue.title || issue.name || '未知標題',
