@@ -66,21 +66,21 @@ const assessmentTranslations = {
 
   H1_KEYWORD_MISSING: {
     'zh-TW': {
-      name: 'H1 關鍵字檢測',
+      name: '頁面 H1 關鍵字檢測',
       good: {
-        title: 'H1 包含關鍵字',
-        description: 'H1 標題包含焦點關鍵字和相關關鍵字',
-        recommendation: '完美！你的 H1 同時包含了焦點關鍵字和相關關鍵字。'
+        title: '頁面 H1 包含關鍵字',
+        description: '頁面 H1 標題包含焦點關鍵字和相關關鍵字',
+        recommendation: '完美！你的頁面 H1 同時包含了焦點關鍵字和相關關鍵字。'
       },
       ok: {
         title: '沒有提供焦點關鍵字',
-        description: '沒有提供焦點關鍵字進行 H1 分析',
-        recommendation: '設定焦點關鍵字以分析 H1 優化。'
+        description: '沒有提供焦點關鍵字進行頁面 H1 分析',
+        recommendation: '設定焦點關鍵字以分析頁面 H1 優化。'
       },
       bad: {
-        title: 'H1 缺少關鍵字',
-        description: 'H1 標題缺少焦點關鍵字',
-        recommendation: '在 H1 標題中加入焦點關鍵字和至少一個相關關鍵字。'
+        title: '頁面 H1 缺少關鍵字',
+        description: '頁面 H1 標題缺少焦點關鍵字',
+        recommendation: '在頁面 H1 標題中加入焦點關鍵字和至少一個相關關鍵字。'
       }
     },
     en: {
@@ -346,21 +346,21 @@ const assessmentTranslations = {
 
   TITLE_NEEDS_IMPROVEMENT: {
     'zh-TW': {
-      name: '標題長度檢測',
+      name: 'Meta 標題長度檢測',
       good: {
-        title: '標題長度適中',
-        description: '標題寬度在最佳範圍內',
-        recommendation: '完美！你的標題長度適中。'
+        title: 'Meta 標題長度適中',
+        description: 'Meta 標題寬度在最佳範圍內',
+        recommendation: '完美！你的 Meta 標題長度適中。'
       },
       ok: {
-        title: '標題長度需調整',
-        description: '標題過短或過長',
-        recommendation: '調整標題長度，建議寬度 >150px，最大 600px。'
+        title: 'Meta 標題長度需調整',
+        description: 'Meta 標題過短或過長',
+        recommendation: '調整 Meta 標題長度，建議寬度 >150px，最大 600px。'
       },
       bad: {
-        title: '缺少標題',
-        description: '頁面缺少標題',
-        recommendation: '新增描述性標題（最佳寬度：>150px，最大 600px）。'
+        title: '缺少 Meta 標題',
+        description: '頁面缺少 Meta 標題',
+        recommendation: '新增描述性 Meta 標題（最佳寬度：>150px，最大 600px）。'
       }
     },
     en: {
@@ -386,21 +386,21 @@ const assessmentTranslations = {
 
   TITLE_MISSING: {
     'zh-TW': {
-      name: '標題關鍵字檢測',
+      name: 'Meta 標題關鍵字檢測',
       good: {
-        title: '標題包含關鍵字',
-        description: '標題包含焦點關鍵字和相關關鍵字',
-        recommendation: '完美！你的標題同時包含了焦點關鍵字和相關關鍵字。'
+        title: 'Meta 標題包含關鍵字',
+        description: 'Meta 標題包含焦點關鍵字和相關關鍵字',
+        recommendation: '完美！你的 Meta 標題同時包含了焦點關鍵字和相關關鍵字。'
       },
       ok: {
         title: '沒有提供焦點關鍵字',
-        description: '沒有提供焦點關鍵字進行標題分析',
-        recommendation: '設定焦點關鍵字以分析標題優化。'
+        description: '沒有提供焦點關鍵字進行 Meta 標題分析',
+        recommendation: '設定焦點關鍵字以分析 Meta 標題優化。'
       },
       bad: {
-        title: '標題缺少關鍵字',
-        description: '標題缺少焦點關鍵字',
-        recommendation: '在標題中加入焦點關鍵字和至少一個相關關鍵字。'
+        title: 'Meta 標題缺少關鍵字',
+        description: 'Meta 標題缺少焦點關鍵字',
+        recommendation: '在 Meta 標題中加入焦點關鍵字和至少一個相關關鍵字。'
       }
     },
     en: {
