@@ -97,7 +97,7 @@ class PageLensAnalyzer {
     
     container.innerHTML = `
       <div class="info-item">
-        <h4>頁面標題</h4>
+        <h4>Meta 標題</h4>
         <p>Title 標籤內容</p>
         <div class="value">${title}</div>
       </div>
@@ -475,9 +475,10 @@ class PageLensAnalyzer {
     const grid = document.getElementById('assessmentsGrid');
     grid.innerHTML = '';
     
+    // 舊版翻譯已移除，現在使用 modules/assessment-translations.js 中的翻譯系統
     const assessmentDescriptions = {
       'h1-missing': { name: 'H1 標題檢查', desc: '檢查頁面是否有 H1 標題' },
-      'title-needs-improvement': { name: '頁面標題優化', desc: '檢查頁面標題的 SEO 優化' },
+      'title-needs-improvement': { name: 'Meta 標題長度檢測', desc: '檢查 Meta 標題的 SEO 優化' },
       'meta-description-needs-improvement': { name: 'Meta 描述優化', desc: '檢查 Meta 描述的優化' },
       'images-missing-alt': { name: '圖片 Alt 文字', desc: '檢查圖片是否有 Alt 文字' },
       'keyword-density-low': { name: '關鍵字密度', desc: '檢查關鍵字密度是否合適' },
