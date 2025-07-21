@@ -310,7 +310,8 @@ export class UIResults {
           `關鍵字: ${details.keywordCount || 0} 次`;
         break;
       case 'KEYWORD_DENSITY_LOW':
-        const density = details.density || details.keywordDensity || '0';
+        const densityValue = parseFloat(details.density || details.keywordDensity || '0');
+        const density = densityValue.toFixed(2);
         const keywordCount = details.keywordCount || 0;
         const totalWords = details.totalWords || details.wordCount || 0;
         dataStr = `${density}% (${keywordCount}/${totalWords} 字)`;
