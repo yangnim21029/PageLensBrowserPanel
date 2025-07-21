@@ -720,7 +720,7 @@ class PageLensAnalyzer {
         language: 'zh'
       },
       focusKeyword: keyword || '',
-      synonyms: [],
+      relatedKeywords: [],
       options: {
         contentSelectors: ['.article', 'main', '.content'],
         extractMainContent: true,
@@ -806,7 +806,7 @@ class PageLensAnalyzer {
         language: 'zh'
       },
       focusKeyword: keyword || '',
-      synonyms: [],
+      relatedKeywords: [],
       options: {
         contentSelectors: ['.article', 'main', '.content'],
         extractMainContent: true,
@@ -999,7 +999,7 @@ class PageLensAnalyzer {
         language: 'zh'
       },
       focusKeyword: focusKeyword,
-      synonyms: [],
+      relatedKeywords: [],
       options: {
         contentSelectors: ['.article', 'main', '.content'],
         extractMainContent: true,

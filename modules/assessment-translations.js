@@ -228,7 +228,7 @@ const assessmentTranslations = {
         title: '關鍵字密度異常',
         description: '關鍵字密度過低或過高',
         recommendation:
-          '調整關鍵字使用頻率，建議密度保持在 0.5-2.5% 之間。H2 標題中的關鍵字有 2 倍權重。'
+          '調整關鍵字使用頻率，建議密度保持在 0.5-6.0% 之間（最佳範圍：0.5-2.5%）。'
       }
     },
     en: {
@@ -292,14 +292,25 @@ const assessmentTranslations = {
         recommendation: '完美！你的 Meta 描述長度適中。'
       },
       ok: {
-        title: 'Meta 描述長度需調整',
-        description: 'Meta 描述過短或過長',
-        recommendation: '調整 Meta 描述長度，建議寬度 >600px，最大 960px。'
+        title: 'Meta 描述過短',
+        description: 'Meta 描述長度不足',
+        recommendation: '擴充 Meta 描述內容，建議寬度 >600px。'
       },
       bad: {
-        title: '缺少 Meta 描述',
-        description: '頁面缺少 Meta 描述',
-        recommendation: '新增 Meta 描述（最佳寬度：>600px，最大 960px）。'
+        title: 'Meta 描述問題',
+        description: 'Meta 描述缺失或過長',
+        recommendation: '調整 Meta 描述（最佳寬度：600-960px）。',
+        // 以下為細分情況，前端可根據 details 判斷
+        missing: {
+          title: '缺少 Meta 描述',
+          description: '頁面缺少 Meta 描述',
+          recommendation: '新增 Meta 描述（最佳寬度：600-960px）。'
+        },
+        tooLong: {
+          title: 'Meta 描述過長',
+          description: 'Meta 描述超過建議長度',
+          recommendation: '縮短 Meta 描述至 960px 以內。'
+        }
       }
     },
     en: {
@@ -310,16 +321,25 @@ const assessmentTranslations = {
         recommendation: 'Perfect! Your meta description width is optimal.'
       },
       ok: {
-        title: 'Meta Description Length Needs Adjustment',
-        description: 'Meta description too short or too long',
-        recommendation:
-          'Adjust meta description length. Optimal: >600px, max 960px.'
+        title: 'Meta Description Too Short',
+        description: 'Meta description is too short',
+        recommendation: 'Expand meta description. Optimal: >600px.'
       },
       bad: {
-        title: 'Meta Description Missing',
-        description: 'Page is missing meta description',
-        recommendation:
-          'Add a meta description (optimal width: >600px, max 960px).'
+        title: 'Meta Description Issue',
+        description: 'Meta description missing or too long',
+        recommendation: 'Adjust meta description (optimal: 600-960px).',
+        // Subcategories for frontend to determine based on details
+        missing: {
+          title: 'Meta Description Missing',
+          description: 'Page is missing meta description',
+          recommendation: 'Add a meta description (optimal: 600-960px).'
+        },
+        tooLong: {
+          title: 'Meta Description Too Long',
+          description: 'Meta description exceeds recommended length',
+          recommendation: 'Shorten meta description to under 960px.'
+        }
       }
     }
   },
@@ -570,7 +590,12 @@ const assessmentTranslations = {
 };
 
 // 輔助函數：根據評估結果獲取對應的翻譯
-function getAssessmentTranslation(assessmentId, status, language = 'zh-TW') {
+function getAssessmentTranslation(
+  assessmentId,
+  status,
+  language = 'zh-TW',
+  details = {}
+) {
   const assessment = assessmentTranslations[assessmentId];
   if (!assessment || !assessment[language]) {
     console.warn(`Translation not found for ${assessmentId} in ${language}`);
@@ -579,6 +604,28 @@ function getAssessmentTranslation(assessmentId, status, language = 'zh-TW') {
 
   const lang = assessment[language];
   const statusKey = status.toLowerCase(); // good, ok, bad
+
+  // 特殊處理 META_DESCRIPTION_MISSING 的 bad 狀態
+  if (assessmentId === 'META_DESCRIPTION_MISSING' && statusKey === 'bad') {
+    // 根據 pixelWidth 判斷是缺失還是過長
+    if (details.pixelWidth === 0) {
+      return {
+        name: lang.name,
+        title: lang.bad.missing?.title || lang.bad.title,
+        description: lang.bad.missing?.description || lang.bad.description,
+        recommendation:
+          lang.bad.missing?.recommendation || lang.bad.recommendation
+      };
+    } else if (details.pixelWidth > 960) {
+      return {
+        name: lang.name,
+        title: lang.bad.tooLong?.title || lang.bad.title,
+        description: lang.bad.tooLong?.description || lang.bad.description,
+        recommendation:
+          lang.bad.tooLong?.recommendation || lang.bad.recommendation
+      };
+    }
+  }
 
   return {
     name: lang.name,

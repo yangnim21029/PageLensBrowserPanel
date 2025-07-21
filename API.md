@@ -127,7 +127,7 @@ GET /example  # 使用範例
 ### 統一評估 ID 格式
 
 - **統一命名：** 所有評估 ID 現在前後端一致（如 `H1_MISSING = 'H1_MISSING'`）
-- **固定數量：** 每次分析保證返回 16 個評估結果
+- **固定數量：** 每次分析保證返回 16 個評估結果（12 個 SEO + 4 個可讀性）
 - **增強回應：** 包含處理時間、API 版本、時間戳等資訊
 
 ### 🆕 像素寬度計算
@@ -149,6 +149,13 @@ GET /example  # 使用範例
 - **新增欄位：** API 現在返回 `pageUnderstanding` 欄位
 - **包含內容：** 頁面結構、媒體資訊、連結統計、文字分析等
 - **提升 UX：** 讓用戶了解系統如何理解他們的頁面
+
+### 術語更新 (v2.3)
+
+- **更名：** `synonyms` → `relatedKeywords` 更準確反映其用途
+- **相關關鍵字：** 這些是與焦點關鍵字相關的次要關鍵字，而非同義詞
+- **向後兼容：** API 仍接受 `synonyms` 參數，會自動映射到 `relatedKeywords`
+- **未來保留：** `synonyms` 欄位保留給未來真正的同義詞功能使用
 
 ### 詳細使用指南
 
@@ -313,7 +320,7 @@ API 現在會在 `pageUnderstanding` 欄位返回頁面的結構化理解資訊�
 - `H2_SYNONYMS_MISSING` - H2 相關關鍵字檢測（檢查 relatedKeywords）
 - `IMAGES_MISSING_ALT` - 圖片 Alt 檢測
 - `KEYWORD_MISSING_FIRST_PARAGRAPH` - 首段關鍵字檢測
-- `KEYWORD_DENSITY_LOW` - 關鍵字密度檢測
+- `KEYWORD_DENSITY_LOW` - 關鍵字密度檢測（v2.4: 考慮關鍵字長度，H2 關鍵字享 2x 權重；支援空格分隔的關鍵字）
 - `META_DESCRIPTION_NEEDS_IMPROVEMENT` - Meta 描述檢測
 - `META_DESCRIPTION_MISSING` - Meta 描述長度檢測
 - `TITLE_NEEDS_IMPROVEMENT` - 標題優化檢測
@@ -326,6 +333,29 @@ API 現在會在 `pageUnderstanding` 欄位返回頁面的結構化理解資訊�
 - `PARAGRAPH_LENGTH_LONG` - 段落長度檢測
 - `SENTENCE_LENGTH_LONG` - 句子長度檢測
 - `SUBHEADING_DISTRIBUTION_POOR` - 子標題分佈檢測
+
+## 🎯 新增評估標準 (v2.3)
+
+### H1 和 Title 關鍵字要求
+
+- **H1 標籤：** 必須同時包含焦點關鍵字和至少一個相關關鍵字
+- **Title 標籤：** 必須同時包含焦點關鍵字和至少一個相關關鍵字
+- **字符級匹配：** 使用字符級匹配算法，特別適合中文關鍵字（如「九龍好去處」和「九龍好玩」）
+
+### H2 相關關鍵字覆蓋
+
+- **H2_SYNONYMS_MISSING：** 檢查所有相關關鍵字是否出現在 H2 標籤中
+- **覆蓋率評分：** 100% 覆蓋得滿分，50% 以上為 OK，低於 50% 為 BAD
+- **內容結構：** 確保相關關鍵字分佈在各個章節，提升內容相關性
+
+### 關鍵字密度計算 (v2.4)
+
+- **計算公式：** (關鍵字長度 × 出現次數) / 總字數 × 100%
+- **H2 權重：** H2 中的關鍵字獲得 2 倍權重
+- **空格支援：** 關鍵字如「洗面乳 推薦」會分別計算每個詞
+- **回應新增：** `keywordLength` 顯示關鍵字長度
+- **最佳範圍：** 0.5-2.5%（optimal）
+- **可接受範圍：** 0.5-6.0%（acceptable）
 
 ## 🏢 支援的 WordPress 站點
 
@@ -366,7 +396,7 @@ curl -X POST "https://page-lens-zeta.vercel.app/analyze" \
       "title": "Article Title"
     },
     "focusKeyword": "焦點關鍵詞",
-    "synonyms": ["相關關鍵詞1", "相關關鍵詞2"],
+    "relatedKeywords": ["相關關鍵詞1", "相關關鍵詞2"],
     "options": {
       "contentSelectors": ["article", "main", ".content"],
       "excludeSelectors": [".ad", ".sidebar"]
