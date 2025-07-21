@@ -157,6 +157,13 @@ GET /example  # 使用範例
 - **向後兼容：** API 仍接受 `synonyms` 參數，會自動映射到 `relatedKeywords`
 - **未來保留：** `synonyms` 欄位保留給未來真正的同義詞功能使用
 
+### 首段關鍵字檢測改進 (v2.5)
+
+- **精準檢測：** 首段檢測現在使用 `paragraphs` 陣列，只分析 `<p>` 標籤內容
+- **排除標題：** 不再將 H1 或其他標題文字誤判為首段內容
+- **標準回應：** 評估結果包含 `details.firstParagraph` 顯示前 100 字預覽
+- **新增標準值：** 添加 `standards` 欄位，說明「首段（前 100 字）應包含焦點關鍵字」
+
 ### 詳細使用指南
 
 ```javascript
@@ -319,7 +326,7 @@ API 現在會在 `pageUnderstanding` 欄位返回頁面的結構化理解資訊�
 - `H1_KEYWORD_MISSING` - H1 關鍵字檢測
 - `H2_SYNONYMS_MISSING` - H2 相關關鍵字檢測（檢查 relatedKeywords）
 - `IMAGES_MISSING_ALT` - 圖片 Alt 檢測
-- `KEYWORD_MISSING_FIRST_PARAGRAPH` - 首段關鍵字檢測
+- `KEYWORD_MISSING_FIRST_PARAGRAPH` - 首段關鍵字檢測（v2.5: 排除標題，只分析實際段落內容）
 - `KEYWORD_DENSITY_LOW` - 關鍵字密度檢測（v2.4: 考慮關鍵字長度，H2 關鍵字享 2x 權重；支援空格分隔的關鍵字）
 - `META_DESCRIPTION_NEEDS_IMPROVEMENT` - Meta 描述檢測
 - `META_DESCRIPTION_MISSING` - Meta 描述長度檢測
@@ -356,6 +363,19 @@ API 現在會在 `pageUnderstanding` 欄位返回頁面的結構化理解資訊�
 - **回應新增：** `keywordLength` 顯示關鍵字長度
 - **最佳範圍：** 0.5-2.5%（optimal）
 - **可接受範圍：** 0.5-6.0%（acceptable）
+
+### 最近更新
+
+**v2.5**
+
+- 首段關鍵字檢測改進：排除標題文字，只分析 `<p>` 標籤內容
+- 為 KEYWORD_MISSING_FIRST_PARAGRAPH 添加 standards 欄位
+
+**v2.4**
+
+- 關鍵字密度計算考慮關鍵字長度
+- H2 關鍵字獲得 2x 權重
+- 支援空格分隔的關鍵字
 
 ## 🏢 支援的 WordPress 站點
 
