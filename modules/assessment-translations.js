@@ -73,9 +73,9 @@ const assessmentTranslations = {
         recommendation: '完美！你的 H1 同時包含了焦點關鍵字和相關關鍵字。'
       },
       ok: {
-        title: 'H1 包含焦點關鍵字',
-        description: 'H1 標題包含焦點關鍵字',
-        recommendation: '很好！H1 包含了焦點關鍵字。'
+        title: '沒有提供焦點關鍵字',
+        description: '沒有提供焦點關鍵字進行 H1 分析',
+        recommendation: '設定焦點關鍵字以分析 H1 優化。'
       },
       bad: {
         title: 'H1 缺少關鍵字',
@@ -114,9 +114,9 @@ const assessmentTranslations = {
         recommendation: '太棒了！所有相關關鍵字都分布在 H2 標題中。'
       },
       ok: {
-        title: '跳過相關關鍵字檢查',
+        title: '沒有提供相關關鍵字',
         description: '沒有提供相關關鍵字進行 H2 分析',
-        recommendation: '提供相關關鍵字以分析 H2 優化。'
+        recommendation: '設定相關關鍵字以分析 H2 優化。'
       },
       bad: {
         title: '大部分相關關鍵字缺失',
@@ -183,6 +183,11 @@ const assessmentTranslations = {
         description: '焦點關鍵字出現在第一段',
         recommendation: '很好！你的焦點關鍵字出現在第一段。'
       },
+      ok: {
+        title: '沒有提供焦點關鍵字',
+        description: '沒有提供焦點關鍵字進行首段分析',
+        recommendation: '設定焦點關鍵字以分析首段優化。'
+      },
       bad: {
         title: '首段缺少關鍵字',
         description: '焦點關鍵字沒有出現在第一段',
@@ -214,6 +219,11 @@ const assessmentTranslations = {
         description: '關鍵字密度在最佳範圍內',
         recommendation: '完美！你的關鍵字密度在最佳範圍內。'
       },
+      ok: {
+        title: '沒有提供焦點關鍵字',
+        description: '沒有提供焦點關鍵字進行密度分析',
+        recommendation: '設定焦點關鍵字以分析關鍵字密度。'
+      },
       bad: {
         title: '關鍵字密度異常',
         description: '關鍵字密度過低或過高',
@@ -243,6 +253,11 @@ const assessmentTranslations = {
         title: 'Meta 描述包含關鍵字',
         description: 'Meta 描述包含焦點關鍵字',
         recommendation: '很好！你的 Meta 描述包含了焦點關鍵字。'
+      },
+      ok: {
+        title: '沒有提供焦點關鍵字',
+        description: '沒有提供焦點關鍵字進行 Meta 描述分析',
+        recommendation: '設定焦點關鍵字以分析 Meta 描述優化。'
       },
       bad: {
         title: 'Meta 描述需要改進',
@@ -356,9 +371,9 @@ const assessmentTranslations = {
         recommendation: '完美！你的標題同時包含了焦點關鍵字和相關關鍵字。'
       },
       ok: {
-        title: '標題包含焦點關鍵字',
-        description: '標題包含焦點關鍵字',
-        recommendation: '很好！標題包含了焦點關鍵字。'
+        title: '沒有提供焦點關鍵字',
+        description: '沒有提供焦點關鍵字進行標題分析',
+        recommendation: '設定焦點關鍵字以分析標題優化。'
       },
       bad: {
         title: '標題缺少關鍵字',
