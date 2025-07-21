@@ -54,6 +54,7 @@ Supported sites are hardcoded in `modules/wordpress.js`:
   htmlContent: "string",
   pageDetails: { url, title, language },
   focusKeyword: "string",
+  relatedKeywords: ["string"], // v2.3: renamed from synonyms
   options: {
     contentSelectors: ['.article', 'main', '.content'],
     assessmentConfig: { enableAll: true }
